@@ -18,6 +18,7 @@ public class TankFrame extends Frame {
     private int x = 100;
     private int y = 100;
     private Dir dir = Dir.DOWN;
+    private final int SPEED = 10;
 
     public TankFrame() {
         setVisible(true);
@@ -44,6 +45,22 @@ public class TankFrame extends Frame {
     @Override
     public void paint(Graphics g) {
         g.fillRect(x, y, 50, 50);
+        switch (dir) {
+            case LEFT:
+                x -= SPEED;
+                break;
+            case RIGHT:
+                x += SPEED;
+                break;
+            case UP:
+                y -= SPEED;
+                break;
+            case DOWN:
+                y += SPEED;
+                break;
+            default:
+                break;
+        }
     }
 
 
