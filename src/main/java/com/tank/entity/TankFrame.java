@@ -15,8 +15,8 @@ import java.awt.event.WindowEvent;
  */
 public class TankFrame extends Frame {
 
-    int x = 10;
-    int y = 10;
+    int x = 100;
+    int y = 100;
 
     public TankFrame() {
         setVisible(true);
@@ -42,17 +42,35 @@ public class TankFrame extends Frame {
     //窗口需要重新绘制的时候要调用这个方法
     @Override
     public void paint(Graphics g) {
-        System.out.println("paint");
         g.fillRect(x, y, 50, 50);
     }
 
 
     private class MyKeyListener extends KeyAdapter {
+
+        boolean bL = false;
+        boolean bR = false;
+        boolean bU = false;
+        boolean bD = false;
+
         @Override
         public void keyPressed(KeyEvent e) {
-            System.out.println("press");
-            x += 10;
-            //每调用一次repaint就会去调用paint方法，刷新窗口
+            int keyCode = e.getKeyCode();
+
+            switch (keyCode) {
+                case KeyEvent.VK_LEFT:
+                    x -= 10;
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    x += 10;
+                    break;
+                case KeyEvent.VK_UP:
+                    y -= 10;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    y += 10;
+                    break;
+            }
         }
 
         @Override
