@@ -15,8 +15,9 @@ import java.awt.event.WindowEvent;
  */
 public class TankFrame extends Frame {
 
-    int x = 100;
-    int y = 100;
+    private int x = 100;
+    private int y = 100;
+    private Dir dir = Dir.DOWN;
 
     public TankFrame() {
         setVisible(true);
@@ -74,8 +75,9 @@ public class TankFrame extends Frame {
                 default:
                     break;
             }
+            //设置主站坦克方向
+            setMainTankDir();
         }
-
 
         @Override
         public void keyReleased(KeyEvent e) {
@@ -97,6 +99,16 @@ public class TankFrame extends Frame {
                 default:
                     break;
             }
+            setMainTankDir();
         }
+
+        //当某个按键被按下的时候，设置方向
+        private void setMainTankDir() {
+            if (bL) dir = Dir.LEFT;
+            if (bR) dir = Dir.RIGHT;
+            if (bU) dir = Dir.UP;
+            if (bD) dir = Dir.DOWN;
+        }
+
     }
 }
