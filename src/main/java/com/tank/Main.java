@@ -10,7 +10,14 @@ import com.tank.entity.TankFrame;
  * Description: com.tank
  */
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         TankFrame tankFrame = new TankFrame();
+
+
+        //自动刷新窗口
+        while (true) {
+            Thread.sleep(50);
+            tankFrame.repaint();
+        }
     }
 }

@@ -44,8 +44,6 @@ public class TankFrame extends Frame {
     public void paint(Graphics g) {
         System.out.println("paint");
         g.fillRect(x, y, 50, 50);
-        x += 10;
-        y += 10;
     }
 
 
@@ -53,6 +51,8 @@ public class TankFrame extends Frame {
         @Override
         public void keyPressed(KeyEvent e) {
             System.out.println("press");
+            x += 10;
+            //每调用一次repaint就会去调用paint方法，刷新窗口
         }
 
         @Override
