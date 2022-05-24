@@ -1,5 +1,7 @@
 package com.tank;
 
+import com.tank.entity.TankFrame;
+
 /**
  * Copyright (C), 2017-2022, 赵旭
  * Author: 11931
@@ -9,6 +11,6 @@ package com.tank;
  */
 public class Main {
     public static void main(String[] args) {
-        System.out.println("");
+        TankFrame tankFrame = new TankFrame();
     }
 }
