@@ -1,6 +1,8 @@
 package com.tank.entity;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -23,6 +25,10 @@ public class TankFrame extends Frame {
         setTitle("tank war");
         setSize(800, 600);
 
+        //添加键盘的监听
+        addKeyListener(new MyKeyListener());
+
+        //添加一个窗口监听，点击X就会退出进程
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -43,4 +49,15 @@ public class TankFrame extends Frame {
     }
 
 
+    private class MyKeyListener extends KeyAdapter {
+        @Override
+        public void keyPressed(KeyEvent e) {
+            System.out.println("press");
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            System.out.println("release");
+        }
+    }
 }
