@@ -48,6 +48,7 @@ public class TankFrame extends Frame {
 
     private class MyKeyListener extends KeyAdapter {
 
+        //这四个变量是用来记录键盘按下去的方向，可以方便按住两个方向键
         boolean bL = false;
         boolean bR = false;
         boolean bU = false;
@@ -59,23 +60,43 @@ public class TankFrame extends Frame {
 
             switch (keyCode) {
                 case KeyEvent.VK_LEFT:
-                    x -= 10;
+                    bL = true;
                     break;
                 case KeyEvent.VK_RIGHT:
-                    x += 10;
+                    bR = true;
                     break;
                 case KeyEvent.VK_UP:
-                    y -= 10;
+                    bU = true;
                     break;
                 case KeyEvent.VK_DOWN:
-                    y += 10;
+                    bD = true;
+                    break;
+                default:
                     break;
             }
         }
 
+
         @Override
         public void keyReleased(KeyEvent e) {
-            System.out.println("release");
+            int keyCode = e.getKeyCode();
+            switch (keyCode) {
+                //键盘释放的时候，需要把方向设置回来，不然会一直往同一个方向执行
+                case KeyEvent.VK_LEFT:
+                    bL = false;
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    bR = false;
+                    break;
+                case KeyEvent.VK_UP:
+                    bU = false;
+                    break;
+                case KeyEvent.VK_DOWN:
+                    bD = false;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
