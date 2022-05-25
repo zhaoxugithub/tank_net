@@ -18,8 +18,8 @@ public class TankFrame extends Frame {
     private static final int GAME_WIDTH = 800;
     private static final int GAME_HEIGHT = 600;
 
-    Tank tank = new Tank(100, 100, Dir.DOWN);
-    Bullet bullet = new Bullet(200, 200, Dir.DOWN);
+    Tank tank = new Tank(100, 100, Dir.DOWN, this);
+    Bullet bullet = new Bullet(100, 100, Dir.DOWN);
 
     public TankFrame() {
         setVisible(true);

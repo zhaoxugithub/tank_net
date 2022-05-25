@@ -17,11 +17,13 @@ public class Tank {
     private static final int SPEED = 10;
     //坦克是否是停止状态
     private boolean moving = false;
+    private TankFrame tf = null;
 
-    public Tank(int x, int y, Dir dir) {
+    public Tank(int x, int y, Dir dir, TankFrame tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.tf = tf;
     }
 
     public void setDir(Dir dir) {
@@ -63,7 +65,8 @@ public class Tank {
 
     //每次按下z键，就会创建一个子弹对象
     //有一个疑问如何将这个子弹类传给TankFrame,然后画出来呢？？？
+    //方法是把TankFrame作为引用传到Tank类中
     public void fire() {
-        new Bullet(this.x, this.y, this.dir);
+        tf.bullet = new Bullet(this.x, this.y, this.dir);
     }
 }
