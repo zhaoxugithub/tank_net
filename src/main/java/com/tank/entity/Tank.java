@@ -121,6 +121,6 @@ public class Tank {
     //有一个疑问如何将这个子弹类传给TankFrame,然后画出来呢？？？
     //方法是把TankFrame作为引用传到Tank类中
     public void fire() {
-        tf.bulletList.add(new Bullet(this.x, this.y, this.dir, tf));
+        tf.bulletList.add(new Bullet(this.x, this.y, this.dir, tf, Group.GOOD));
     }
 }

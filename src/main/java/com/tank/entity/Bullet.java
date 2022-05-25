@@ -1,5 +1,7 @@
 package com.tank.entity;
 
+import com.tank.util.ResourceManager;
+
 import java.awt.*;
 
 /**
@@ -15,25 +17,39 @@ public class Bullet {
     private static final int SPEED = 10;
     private int x, y;
     private Dir dir;
+    private Group group;
     private static final int WIDTH = 5, HEIGHT = 5;
     private boolean lived = true;
 
     TankFrame tf = null;
 
-    public Bullet(int x, int y, Dir dir, TankFrame tf) {
+    public Bullet(int x, int y, Dir dir, TankFrame tf, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
         this.tf = tf;
+        this.group = group;
     }
 
 
     //给TankFrame去调用的，实际上也是每50ms调用一次
     public void paint(Graphics g) {
-        Color c = g.getColor();
-        g.setColor(Color.red);
-        g.fillOval(x, y, WIDTH, HEIGHT);
-        g.setColor(c);
+        switch (dir) {
+            case LEFT:
+                g.drawImage(this.group == Group.GOOD ? ResourceManager.goodBulletL : ResourceManager.badBulletL, this.x, this.y, null);
+                break;
+            case RIGHT:
+                g.drawImage(this.group == Group.GOOD ? ResourceManager.goodBulletR : ResourceManager.badBulletR, this.x, this.y, null);
+                break;
+            case UP:
+                g.drawImage(this.group == Group.GOOD ? ResourceManager.goodBulletU : ResourceManager.badBulletU, this.x, this.y, null);
+                break;
+            case DOWN:
+                g.drawImage(this.group == Group.GOOD ? ResourceManager.goodBulletD : ResourceManager.badBulletD, this.x, this.y, null);
+                break;
+            default:
+                break;
+        }
         move();
     }
 
