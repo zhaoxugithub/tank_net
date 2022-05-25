@@ -50,7 +50,7 @@ public class TankFrame extends Frame {
 
         //添加title 子弹
         Color color = g.getColor();
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         g.drawString("子弹数量:" + bulletList.size(), 10, 60);
         g.setColor(color);
 
@@ -78,7 +78,7 @@ public class TankFrame extends Frame {
         }
         Graphics goffScreen = offScreenImage.getGraphics();
         Color color = goffScreen.getColor();
-        goffScreen.setColor(Color.WHITE);
+        goffScreen.setColor(Color.BLACK);
         goffScreen.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         goffScreen.setColor(color);
         paint(goffScreen);

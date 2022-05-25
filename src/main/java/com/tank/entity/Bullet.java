@@ -18,7 +18,11 @@ public class Bullet {
     private int x, y;
     private Dir dir;
     private Group group;
-    private static final int WIDTH = 5, HEIGHT = 5;
+    public static int GOODWIDTH = ResourceManager.goodBulletD.getWidth();
+    public static int GOODHEIGHT = ResourceManager.goodBulletD.getHeight();
+
+    public static int BADWIDTH = ResourceManager.badBulletD.getWidth();
+    public static int BADHEIGHT = ResourceManager.badBulletD.getHeight();
     private boolean lived = true;
 
     TankFrame tf = null;

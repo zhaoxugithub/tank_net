@@ -1,6 +1,7 @@
 package com.tank.entity;
 
 
+import com.tank.util.Audio;
 import com.tank.util.ResourceManager;
 
 import java.awt.*;
@@ -43,7 +44,6 @@ public class Tank {
         this.moving = moving;
         this.tf = tf;
         this.group = group;
-
     }
 
     public void setDir(Dir dir) {
@@ -96,6 +96,12 @@ public class Tank {
             default:
                 break;
         }
+
+        //设置敌方坦克随机开火方向
+        if (this.group == Group.BAD && random.nextInt(10) > 7) {
+            this.fire();
+        }
+
         //如果坦克是敌方的并且满足随机数条件，触发选择随机方向
         if (this.group == Group.BAD && random.nextInt(10) > 7) {
             randomDir();
@@ -121,6 +127,19 @@ public class Tank {
     //有一个疑问如何将这个子弹类传给TankFrame,然后画出来呢？？？
     //方法是把TankFrame作为引用传到Tank类中
     public void fire() {
-        tf.bulletList.add(new Bullet(this.x, this.y, this.dir, tf, Group.GOOD));
+        //算出子弹打出的中点位置
+        int bx;
+        int by;
+        if (this.group == Group.GOOD) {
+             bx = this.x + Tank.GOODWIDTH / 2 - Bullet.GOODWIDTH / 2;
+             by = this.y + Tank.GOODHEIGHT / 2 - Bullet.GOODHEIGHT / 2;
+            tf.bulletList.add(new Bullet(bx, by, this.dir, tf, Group.GOOD));
+
+        }else {
+            bx = this.x + Tank.BADWIDTH / 2 - Bullet.BADWIDTH / 2;
+            by = this.y + Tank.BADHEIGHT / 2 - Bullet.BADHEIGHT / 2;
+            tf.bulletList.add(new Bullet(bx, by, this.dir, tf, Group.BAD));
+        }
+        if (this.group == Group.GOOD) new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
     }
 }
