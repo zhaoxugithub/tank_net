@@ -15,10 +15,7 @@ import java.awt.event.WindowEvent;
  */
 public class TankFrame extends Frame {
 
-    private int x = 100;
-    private int y = 100;
-    private Dir dir = Dir.DOWN;
-    private final int SPEED = 10;
+    Tank tank = new Tank(100, 100, Dir.DOWN);
 
     public TankFrame() {
         setVisible(true);
@@ -44,23 +41,8 @@ public class TankFrame extends Frame {
     //窗口需要重新绘制的时候要调用这个方法
     @Override
     public void paint(Graphics g) {
-        g.fillRect(x, y, 50, 50);
-        switch (dir) {
-            case LEFT:
-                x -= SPEED;
-                break;
-            case RIGHT:
-                x += SPEED;
-                break;
-            case UP:
-                y -= SPEED;
-                break;
-            case DOWN:
-                y += SPEED;
-                break;
-            default:
-                break;
-        }
+        //坦克自己去画自己
+        tank.paint(g);
     }
 
 
@@ -121,11 +103,10 @@ public class TankFrame extends Frame {
 
         //当某个按键被按下的时候，设置方向
         private void setMainTankDir() {
-            if (bL) dir = Dir.LEFT;
-            if (bR) dir = Dir.RIGHT;
-            if (bU) dir = Dir.UP;
-            if (bD) dir = Dir.DOWN;
+            if (bL) tank.setDir(Dir.LEFT);
+            if (bR) tank.setDir(Dir.RIGHT);
+            if (bU) tank.setDir(Dir.UP);
+            if (bD) tank.setDir(Dir.DOWN);
         }
-
     }
 }
