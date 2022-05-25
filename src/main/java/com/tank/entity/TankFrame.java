@@ -19,10 +19,11 @@ public class TankFrame extends Frame {
     public static final int GAME_WIDTH = 800;
     public static final int GAME_HEIGHT = 600;
 
-    Tank tank = new Tank(100, 100, Dir.DOWN, this);
+    Tank tank = new Tank(100, 100, false, Dir.DOWN, this, Group.GOOD);
 
     //子弹容器，主要是可以发出多个子弹
-    ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
+    public ArrayList<Bullet> bulletList = new ArrayList<>();
+    public ArrayList<Tank> tanksList = new ArrayList<>();
 
     public TankFrame() {
         setVisible(true);
@@ -56,9 +57,15 @@ public class TankFrame extends Frame {
         //坦克自己去画自己
         tank.paint(g);
 
+        //画敌方坦克
+        for (int i = 0; i < tanksList.size(); i++) {
+            tanksList.get(i).paint(g);
+        }
+
         for (int i = 0; i < bulletList.size(); i++) {
             bulletList.get(i).paint(g);
         }
+
     }
 
     //下面这段代码是防止页面抖动

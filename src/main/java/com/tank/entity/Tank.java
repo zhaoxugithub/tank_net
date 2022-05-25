@@ -1,6 +1,10 @@
 package com.tank.entity;
 
+
+import com.tank.util.ResourceManager;
+
 import java.awt.*;
+import java.util.Random;
 
 /**
  * Copyright (C), 2017-2022, 赵旭
@@ -19,11 +23,19 @@ public class Tank {
     private boolean moving = false;
     private TankFrame tf = null;
 
-    public Tank(int x, int y, Dir dir, TankFrame tf) {
+    //坦克阵营
+    private Group group = Group.BAD;
+
+    private Random random = new Random();
+
+    public Tank(int x, int y, boolean moving, Dir dir, TankFrame tf, Group group) {
         this.x = x;
         this.y = y;
         this.dir = dir;
+        this.moving = moving;
         this.tf = tf;
+        this.group = group;
+
     }
 
     public void setDir(Dir dir) {
@@ -35,17 +47,29 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
-        Color c = g.getColor();
-        g.setColor(Color.WHITE);
-        g.setColor(c);
-        g.fillRect(x, y, 50, 50);
+        switch (dir) {
+            case LEFT:
+                g.drawImage(this.group == Group.GOOD ? ResourceManager.goodTankL : ResourceManager.badTankL, this.x, this.y, null);
+                break;
+            case RIGHT:
+                g.drawImage(this.group == Group.GOOD ? ResourceManager.goodTankR : ResourceManager.badTankR, this.x, this.y, null);
+                break;
+            case UP:
+                g.drawImage(this.group == Group.GOOD ? ResourceManager.goodTankU : ResourceManager.badTankU, this.x, this.y, null);
+                break;
+            case DOWN:
+                g.drawImage(this.group == Group.GOOD ? ResourceManager.goodTankD : ResourceManager.badTankD, this.x, this.y, null);
+                break;
+            default:
+                break;
+        }
+
         move();
     }
 
     public void move() {
         //如果没有移动,就会停止
         if (!moving) {
-            System.out.println("sdss");
             return;
         }
         switch (dir) {
@@ -64,6 +88,15 @@ public class Tank {
             default:
                 break;
         }
+        //如果坦克是敌方的并且满足随机数条件，触发选择随机方向
+        if (this.group == Group.BAD && random.nextInt(10) > 7) {
+            randomDir();
+        }
+    }
+
+    //从四个方向重选择一个方向
+    private void randomDir() {
+        this.dir = Dir.values()[random.nextInt(4)];
     }
 
     //每次按下z键，就会创建一个子弹对象

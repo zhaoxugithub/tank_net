@@ -1,5 +1,8 @@
 package com.tank;
 
+import com.tank.entity.Dir;
+import com.tank.entity.Group;
+import com.tank.entity.Tank;
 import com.tank.entity.TankFrame;
 
 /**
@@ -13,6 +16,10 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         TankFrame tankFrame = new TankFrame();
 
+        //添加敌方坦克
+        for (int i = 0; i < 10; i++) {
+            tankFrame.tanksList.add(new Tank(100 + i * 80, 400, true, Dir.DOWN, tankFrame, Group.BAD));
+        }
         //自动刷新窗口
         while (true) {
             Thread.sleep(50);
