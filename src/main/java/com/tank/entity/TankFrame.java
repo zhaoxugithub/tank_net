@@ -52,7 +52,6 @@ public class TankFrame extends Frame {
     }
 
 
-
     //下面这段代码是防止页面抖动
     Image offScreenImage = null;
 
@@ -121,6 +120,8 @@ public class TankFrame extends Frame {
                 case KeyEvent.VK_DOWN:
                     bD = false;
                     break;
+                case KeyEvent.VK_Z:
+                    tank.fire();
                 default:
                     break;
             }

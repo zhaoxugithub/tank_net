@@ -60,4 +60,10 @@ public class Tank {
                 break;
         }
     }
+
+    //每次按下z键，就会创建一个子弹对象
+    //有一个疑问如何将这个子弹类传给TankFrame,然后画出来呢？？？
+    public void fire() {
+        new Bullet(this.x, this.y, this.dir);
+    }
 }
