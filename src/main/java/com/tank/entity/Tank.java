@@ -26,6 +26,14 @@ public class Tank {
     //坦克阵营
     private Group group = Group.BAD;
 
+    //获取坦克的宽度和高度
+    public static int GOODWIDTH = ResourceManager.goodTankL.getWidth();
+    public static int GOODHEIGHT = ResourceManager.goodTankL.getHeight();
+
+    public static int BADWIDTH = ResourceManager.badTankL.getWidth();
+    public static int BADHEIGHT = ResourceManager.badTankL.getHeight();
+
+
     private Random random = new Random();
 
     public Tank(int x, int y, boolean moving, Dir dir, TankFrame tf, Group group) {
@@ -92,6 +100,16 @@ public class Tank {
         if (this.group == Group.BAD && random.nextInt(10) > 7) {
             randomDir();
         }
+
+        //边界检测
+        boundsCheck();
+    }
+
+    private void boundsCheck() {
+        if (this.x < 0) this.x = 0;
+        if (this.x > TankFrame.GAME_WIDTH - Tank.GOODWIDTH) this.x = TankFrame.GAME_WIDTH - Tank.GOODWIDTH;
+        if (this.y < 30) this.y = 30;
+        if (this.y > TankFrame.GAME_HEIGHT - Tank.GOODHEIGHT) this.y = TankFrame.GAME_HEIGHT - Tank.GOODHEIGHT;
     }
 
     //从四个方向重选择一个方向
