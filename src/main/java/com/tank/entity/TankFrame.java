@@ -16,6 +16,7 @@ import java.awt.event.WindowEvent;
 public class TankFrame extends Frame {
 
     Tank tank = new Tank(100, 100, Dir.DOWN);
+    Bullet bullet = new Bullet(200, 200, Dir.DOWN);
 
     public TankFrame() {
         setVisible(true);
@@ -43,6 +44,8 @@ public class TankFrame extends Frame {
     public void paint(Graphics g) {
         //坦克自己去画自己
         tank.paint(g);
+
+        bullet.paint(g);
     }
 
 
