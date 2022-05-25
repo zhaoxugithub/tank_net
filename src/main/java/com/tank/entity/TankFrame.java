@@ -15,6 +15,9 @@ import java.awt.event.WindowEvent;
  */
 public class TankFrame extends Frame {
 
+    private static final int GAME_WIDTH = 800;
+    private static final int GAME_HEIGHT = 600;
+
     Tank tank = new Tank(100, 100, Dir.DOWN);
     Bullet bullet = new Bullet(200, 200, Dir.DOWN);
 
@@ -23,7 +26,7 @@ public class TankFrame extends Frame {
         //设置是否可以改变大小
         setResizable(false);
         setTitle("tank war");
-        setSize(800, 600);
+        setSize(GAME_WIDTH, GAME_HEIGHT);
 
         //添加键盘的监听
         addKeyListener(new MyKeyListener());
@@ -46,6 +49,26 @@ public class TankFrame extends Frame {
         tank.paint(g);
 
         bullet.paint(g);
+    }
+
+
+
+    //下面这段代码是防止页面抖动
+    Image offScreenImage = null;
+
+    @Override
+    public void update(Graphics g) {
+
+        if (offScreenImage == null) {
+            offScreenImage = this.createImage(GAME_WIDTH, GAME_HEIGHT);
+        }
+        Graphics goffScreen = offScreenImage.getGraphics();
+        Color color = goffScreen.getColor();
+        goffScreen.setColor(Color.WHITE);
+        goffScreen.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        goffScreen.setColor(color);
+        paint(goffScreen);
+        g.drawImage(offScreenImage, 0, 0, null);
     }
 
 
