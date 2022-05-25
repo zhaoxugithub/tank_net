@@ -5,6 +5,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 /**
  * Copyright (C), 2017-2022, 赵旭
@@ -15,11 +16,13 @@ import java.awt.event.WindowEvent;
  */
 public class TankFrame extends Frame {
 
-    private static final int GAME_WIDTH = 800;
-    private static final int GAME_HEIGHT = 600;
+    public static final int GAME_WIDTH = 800;
+    public static final int GAME_HEIGHT = 600;
 
     Tank tank = new Tank(100, 100, Dir.DOWN, this);
-    Bullet bullet = new Bullet(100, 100, Dir.DOWN);
+
+    //子弹容器，主要是可以发出多个子弹
+    ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
 
     public TankFrame() {
         setVisible(true);
@@ -27,10 +30,8 @@ public class TankFrame extends Frame {
         setResizable(false);
         setTitle("tank war");
         setSize(GAME_WIDTH, GAME_HEIGHT);
-
         //添加键盘的监听
         addKeyListener(new MyKeyListener());
-
         //添加一个窗口监听，点击X就会退出进程
         addWindowListener(new WindowAdapter() {
             @Override
@@ -45,19 +46,26 @@ public class TankFrame extends Frame {
     //窗口需要重新绘制的时候要调用这个方法，每隔50ms调用一次
     @Override
     public void paint(Graphics g) {
+
+        //添加title 子弹
+        Color color = g.getColor();
+        g.setColor(Color.BLACK);
+        g.drawString("子弹数量:" + bulletList.size(), 10, 60);
+        g.setColor(color);
+
         //坦克自己去画自己
         tank.paint(g);
 
-        bullet.paint(g);
+        for (int i = 0; i < bulletList.size(); i++) {
+            bulletList.get(i).paint(g);
+        }
     }
-
 
     //下面这段代码是防止页面抖动
     Image offScreenImage = null;
 
     @Override
     public void update(Graphics g) {
-
         if (offScreenImage == null) {
             offScreenImage = this.createImage(GAME_WIDTH, GAME_HEIGHT);
         }
@@ -72,7 +80,6 @@ public class TankFrame extends Frame {
 
 
     private class MyKeyListener extends KeyAdapter {
-
         //这四个变量是用来记录键盘按下去的方向，可以方便按住两个方向键
         boolean bL = false;
         boolean bR = false;

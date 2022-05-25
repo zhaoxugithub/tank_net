@@ -35,6 +35,9 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
+        Color c = g.getColor();
+        g.setColor(Color.WHITE);
+        g.setColor(c);
         g.fillRect(x, y, 50, 50);
         move();
     }
@@ -67,6 +70,6 @@ public class Tank {
     //有一个疑问如何将这个子弹类传给TankFrame,然后画出来呢？？？
     //方法是把TankFrame作为引用传到Tank类中
     public void fire() {
-        tf.bullet = new Bullet(this.x, this.y, this.dir);
+        tf.bulletList.add(new Bullet(this.x, this.y, this.dir, tf));
     }
 }
