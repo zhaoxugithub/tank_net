@@ -38,7 +38,7 @@ public class TankFrame extends Frame {
 
 
     //重写paint方法
-    //窗口需要重新绘制的时候要调用这个方法
+    //窗口需要重新绘制的时候要调用这个方法，每隔50ms调用一次
     @Override
     public void paint(Graphics g) {
         //坦克自己去画自己
@@ -103,10 +103,16 @@ public class TankFrame extends Frame {
 
         //当某个按键被按下的时候，设置方向
         private void setMainTankDir() {
-            if (bL) tank.setDir(Dir.LEFT);
-            if (bR) tank.setDir(Dir.RIGHT);
-            if (bU) tank.setDir(Dir.UP);
-            if (bD) tank.setDir(Dir.DOWN);
+            if (!bL && !bD && !bU && !bR) {
+                tank.setMoving(false);
+            } else {
+                //可以移动了
+                tank.setMoving(true);
+                if (bL) tank.setDir(Dir.LEFT);
+                if (bR) tank.setDir(Dir.RIGHT);
+                if (bU) tank.setDir(Dir.UP);
+                if (bD) tank.setDir(Dir.DOWN);
+            }
         }
     }
 }
