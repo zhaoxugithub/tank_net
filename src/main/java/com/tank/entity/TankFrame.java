@@ -22,8 +22,10 @@ public class TankFrame extends Frame {
     Tank tank = new Tank(100, 100, false, Dir.DOWN, this, Group.GOOD);
 
     //子弹容器，主要是可以发出多个子弹
-    public ArrayList<Bullet> bulletList = new ArrayList<>();
+    public ArrayList<Bullet> goodBulletList = new ArrayList<>();
+    public ArrayList<Bullet> badBulletList = new ArrayList<>();
     public ArrayList<Tank> tanksList = new ArrayList<>();
+    public ArrayList<Explode> explodeList = new ArrayList<>();
 
     public TankFrame() {
         setVisible(true);
@@ -51,7 +53,7 @@ public class TankFrame extends Frame {
         //添加title 子弹
         Color color = g.getColor();
         g.setColor(Color.WHITE);
-        g.drawString("子弹数量:" + bulletList.size(), 10, 60);
+        g.drawString("子弹数量:" + goodBulletList.size(), 10, 60);
         g.setColor(color);
 
         //坦克自己去画自己
@@ -62,10 +64,21 @@ public class TankFrame extends Frame {
             tanksList.get(i).paint(g);
         }
 
-        for (int i = 0; i < bulletList.size(); i++) {
-            bulletList.get(i).paint(g);
+        //画出子弹
+        for (int i = 0; i < goodBulletList.size(); i++) {
+            goodBulletList.get(i).paint(g);
         }
 
+        //画出爆炸
+        for (int i = 0; i < explodeList.size(); i++) {
+            explodeList.get(i).paint(g);
+        }
+
+        for (int i = 0; i < tanksList.size(); i++) {
+            for (int j = 0; j < goodBulletList.size(); j++) {
+                goodBulletList.get(j).collideWith(tanksList.get(i));
+            }
+        }
     }
 
     //下面这段代码是防止页面抖动

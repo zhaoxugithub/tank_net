@@ -16,16 +16,18 @@ import java.util.Random;
  */
 public class Tank {
 
-    private int x;
-    private int y;
+    public int x;
+    public int y;
     private Dir dir;
-    private static final int SPEED = 10;
+    private static final int SPEED = 15;
     //坦克是否是停止状态
     private boolean moving = false;
     private TankFrame tf = null;
 
+    private boolean lived = true;
+
     //坦克阵营
-    private Group group = Group.BAD;
+    public Group group = Group.BAD;
 
     //获取坦克的宽度和高度
     public static int GOODWIDTH = ResourceManager.goodTankL.getWidth();
@@ -37,6 +39,9 @@ public class Tank {
 
     private Random random = new Random();
 
+    //添加这个主要是用检测子弹和坦克爆炸用的
+    public Rectangle rectangle = new Rectangle();
+
     public Tank(int x, int y, boolean moving, Dir dir, TankFrame tf, Group group) {
         this.x = x;
         this.y = y;
@@ -44,6 +49,11 @@ public class Tank {
         this.moving = moving;
         this.tf = tf;
         this.group = group;
+
+        rectangle.x = this.x;
+        rectangle.y = this.y;
+        rectangle.width = BADWIDTH;
+        rectangle.height = BADHEIGHT;
     }
 
     public void setDir(Dir dir) {
@@ -55,6 +65,11 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
+
+        if (!this.lived) {
+            tf.tanksList.remove(this);
+        }
+
         switch (dir) {
             case LEFT:
                 g.drawImage(this.group == Group.GOOD ? ResourceManager.goodTankL : ResourceManager.badTankL, this.x, this.y, null);
@@ -71,7 +86,6 @@ public class Tank {
             default:
                 break;
         }
-
         move();
     }
 
@@ -109,6 +123,10 @@ public class Tank {
 
         //边界检测
         boundsCheck();
+
+        //更新位置
+        rectangle.x = this.x;
+        rectangle.y = this.y;
     }
 
     private void boundsCheck() {
@@ -131,15 +149,19 @@ public class Tank {
         int bx;
         int by;
         if (this.group == Group.GOOD) {
-             bx = this.x + Tank.GOODWIDTH / 2 - Bullet.GOODWIDTH / 2;
-             by = this.y + Tank.GOODHEIGHT / 2 - Bullet.GOODHEIGHT / 2;
-            tf.bulletList.add(new Bullet(bx, by, this.dir, tf, Group.GOOD));
+            bx = this.x + Tank.GOODWIDTH / 2 - Bullet.GOODWIDTH / 2;
+            by = this.y + Tank.GOODHEIGHT / 2 - Bullet.GOODHEIGHT / 2;
+            tf.goodBulletList.add(new Bullet(bx, by, this.dir, tf, Group.GOOD));
 
-        }else {
+        } else {
             bx = this.x + Tank.BADWIDTH / 2 - Bullet.BADWIDTH / 2;
             by = this.y + Tank.BADHEIGHT / 2 - Bullet.BADHEIGHT / 2;
-            tf.bulletList.add(new Bullet(bx, by, this.dir, tf, Group.BAD));
+            tf.badBulletList.add(new Bullet(bx, by, this.dir, tf, Group.BAD));
         }
         if (this.group == Group.GOOD) new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
+    }
+
+    public void die() {
+        this.lived = false;
     }
 }
