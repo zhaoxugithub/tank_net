@@ -17,7 +17,7 @@ public class ConfigUtil {
             e.printStackTrace();
         }
     }
-
+    //单利模式
     private ConfigUtil(){}
 
     public static Object get(String key) {

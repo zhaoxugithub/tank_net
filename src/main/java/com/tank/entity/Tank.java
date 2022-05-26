@@ -1,7 +1,9 @@
 package com.tank.entity;
 
 
-import com.tank.util.Audio;
+import com.tank.fireStrategy.DefaultFireStrategy;
+import com.tank.fireStrategy.FireStrategy;
+import com.tank.fireStrategy.FourFireStrategy;
 import com.tank.util.ConfigUtil;
 import com.tank.util.ResourceManager;
 
@@ -18,13 +20,13 @@ import java.util.Random;
 public class Tank {
     public int x;
     public int y;
-    private Dir dir;
+    public Dir dir;
     private static final int SPEED = ConfigUtil.getInteger("tankSpeed");
     //坦克子弹剩余数量
     public static int bulletsNums = ConfigUtil.getInteger("bulletNum");
     //坦克是否是停止状态
     private boolean moving = false;
-    private TankFrame tf = null;
+    public TankFrame tf = null;
     public boolean lived = true;
     //坦克阵营
     public Group group = Group.BAD;
@@ -36,6 +38,8 @@ public class Tank {
     private Random random = new Random();
     //添加这个主要是用检测子弹和坦克爆炸用的
     public Rectangle rectangle = new Rectangle();
+
+    private FireStrategy fireStrategy;
 
     public Tank(int x, int y, boolean moving, Dir dir, TankFrame tf, Group group) {
         this.x = x;
@@ -49,6 +53,14 @@ public class Tank {
         rectangle.y = this.y;
         rectangle.width = BADWIDTH;
         rectangle.height = BADHEIGHT;
+
+        //这里使用策略模式
+        if (this.group == Group.GOOD) {
+            fireStrategy = new FourFireStrategy();
+        } else {
+            fireStrategy = new DefaultFireStrategy();
+        }
+
     }
 
     public void setDir(Dir dir) {
@@ -139,21 +151,7 @@ public class Tank {
     //有一个疑问如何将这个子弹类传给TankFrame,然后画出来呢？？？
     //方法是把TankFrame作为引用传到Tank类中
     public void fire() {
-        //算出子弹打出的中点位置
-        int bx;
-        int by;
-        if (this.group == Group.GOOD) {
-            if (bulletsNums <= 0) return;
-            bx = this.x + Tank.GOODWIDTH / 2 - Bullet.GOODWIDTH / 2;
-            by = this.y + Tank.GOODHEIGHT / 2 - Bullet.GOODHEIGHT / 2;
-            tf.goodBulletList.add(new Bullet(bx, by, this.dir, tf, Group.GOOD));
-            bulletsNums--;
-        } else {
-            bx = this.x + Tank.BADWIDTH / 2 - Bullet.BADWIDTH / 2;
-            by = this.y + Tank.BADHEIGHT / 2 - Bullet.BADHEIGHT / 2;
-            tf.badBulletList.add(new Bullet(bx, by, this.dir, tf, Group.BAD));
-        }
-        if (this.group == Group.GOOD) new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
+        fireStrategy.fire(this);
     }
 
     public void die() {

@@ -99,9 +99,11 @@ public class TankFrame extends Frame {
             }
         }
 
-        for (int i = 0; i < badBulletList.size(); i++) {
-            badBulletList.get(i).collideWith(tank);
-        }
+
+        //自己坦克和敌方坦克碰撞检测
+//        for (int i = 0; i < badBulletList.size(); i++) {
+//            badBulletList.get(i).collideWith(tank);
+//        }
     }
 
     //下面这段代码是防止页面抖动
