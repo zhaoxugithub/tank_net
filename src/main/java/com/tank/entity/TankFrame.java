@@ -1,5 +1,7 @@
 package com.tank.entity;
 
+import com.tank.util.ConfigUtil;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -16,8 +18,8 @@ import java.util.ArrayList;
  */
 public class TankFrame extends Frame {
 
-    public static final int GAME_WIDTH = 800;
-    public static final int GAME_HEIGHT = 600;
+    public static final int GAME_WIDTH = ConfigUtil.getInteger("gameWidth");
+    public static final int GAME_HEIGHT = ConfigUtil.getInteger("gameHeight");
 
     Tank tank = new Tank(100, 100, false, Dir.DOWN, this, Group.GOOD);
 
@@ -45,17 +47,33 @@ public class TankFrame extends Frame {
     }
 
 
+    public void information(Graphics g) {
+        //添加title 子弹
+        Color color = g.getColor();
+        g.setColor(Color.WHITE);
+        g.drawString("剩余子弹数量:" + Tank.bulletsNums, 10, 60);
+        g.drawString("剩余敌人数量:" + tanksList.size(), 200, 60);
+        g.setColor(color);
+
+
+        if (tanksList.size() <= 0 || !tank.lived) {
+            g.setColor(Color.RED);
+            g.drawString("game over", 1500, 1500);
+        }
+    }
+
+
     //重写paint方法
     //窗口需要重新绘制的时候要调用这个方法，每隔50ms调用一次
     @Override
     public void paint(Graphics g) {
+        //记录一些子弹，坦克信息
+        information(g);
 
-        //添加title 子弹
-        Color color = g.getColor();
-        g.setColor(Color.WHITE);
-        g.drawString("子弹数量:" + goodBulletList.size(), 10, 60);
-        g.setColor(color);
-
+        if (!tank.lived) {
+            tank.x = 999999;
+            tank.y = 999999;
+        }
         //坦克自己去画自己
         tank.paint(g);
 
@@ -63,16 +81,13 @@ public class TankFrame extends Frame {
         for (int i = 0; i < tanksList.size(); i++) {
             tanksList.get(i).paint(g);
         }
-
         //画出子弹
         for (int i = 0; i < goodBulletList.size(); i++) {
             goodBulletList.get(i).paint(g);
         }
-
         for (int i = 0; i < badBulletList.size(); i++) {
             badBulletList.get(i).paint(g);
         }
-
         //画出爆炸
         for (int i = 0; i < explodeList.size(); i++) {
             explodeList.get(i).paint(g);
@@ -82,6 +97,10 @@ public class TankFrame extends Frame {
             for (int j = 0; j < goodBulletList.size(); j++) {
                 goodBulletList.get(j).collideWith(tanksList.get(i));
             }
+        }
+
+        for (int i = 0; i < badBulletList.size(); i++) {
+            badBulletList.get(i).collideWith(tank);
         }
     }
 

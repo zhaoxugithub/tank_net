@@ -1,6 +1,7 @@
 package com.tank.entity;
 
 import com.tank.util.Audio;
+import com.tank.util.ConfigUtil;
 import com.tank.util.ResourceManager;
 
 import java.awt.*;
@@ -15,7 +16,7 @@ import java.awt.*;
 
 public class Bullet {
 
-    private static final int SPEED = 30;
+    private static final int SPEED = ConfigUtil.getInteger("bulletSpeed");
     public int x, y;
     private Dir dir;
     private Group group;
@@ -46,6 +47,11 @@ public class Bullet {
 
     //给TankFrame去调用的，实际上也是每50ms调用一次
     public void paint(Graphics g) {
+
+        if (!this.lived) {
+            tf.badBulletList.remove(this);
+        }
+
         switch (dir) {
             case LEFT:
                 g.drawImage(this.group == Group.GOOD ? ResourceManager.goodBulletL : ResourceManager.badBulletL, this.x, this.y, null);
@@ -70,9 +76,9 @@ public class Bullet {
 
         if (this.x < 0 || this.y < 0 || this.x > TankFrame.GAME_WIDTH || this.y > TankFrame.GAME_HEIGHT) {
             lived = false;
-            if(this.group == Group.GOOD){
+            if (this.group == Group.GOOD) {
                 tf.goodBulletList.remove(this);
-            }else {
+            } else {
                 tf.badBulletList.remove(this);
             }
         }
@@ -102,10 +108,8 @@ public class Bullet {
         if (this.group == tank.group) {
             return;
         }
-
         //如果子弹和坦克相遇
         if (rectangle.intersects(tank.rectangle)) {
-            System.out.println("gggggg");
             new Thread(() -> new Audio("audio/explode.wav").play()).start();
             tank.die();
             this.die();

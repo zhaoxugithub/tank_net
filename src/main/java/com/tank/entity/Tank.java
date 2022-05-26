@@ -2,6 +2,7 @@ package com.tank.entity;
 
 
 import com.tank.util.Audio;
+import com.tank.util.ConfigUtil;
 import com.tank.util.ResourceManager;
 
 import java.awt.*;
@@ -15,30 +16,24 @@ import java.util.Random;
  * Description: com.tank.entity
  */
 public class Tank {
-
     public int x;
     public int y;
     private Dir dir;
-    private static final int SPEED = 15;
+    private static final int SPEED = ConfigUtil.getInteger("tankSpeed");
+    //坦克子弹剩余数量
+    public static int bulletsNums = ConfigUtil.getInteger("bulletNum");
     //坦克是否是停止状态
     private boolean moving = false;
     private TankFrame tf = null;
-
-    private boolean lived = true;
-
+    public boolean lived = true;
     //坦克阵营
     public Group group = Group.BAD;
-
     //获取坦克的宽度和高度
     public static int GOODWIDTH = ResourceManager.goodTankL.getWidth();
     public static int GOODHEIGHT = ResourceManager.goodTankL.getHeight();
-
     public static int BADWIDTH = ResourceManager.badTankL.getWidth();
     public static int BADHEIGHT = ResourceManager.badTankL.getHeight();
-
-
     private Random random = new Random();
-
     //添加这个主要是用检测子弹和坦克爆炸用的
     public Rectangle rectangle = new Rectangle();
 
@@ -65,10 +60,10 @@ public class Tank {
     }
 
     public void paint(Graphics g) {
-
         if (!this.lived) {
             tf.tanksList.remove(this);
         }
+
 
         switch (dir) {
             case LEFT:
@@ -123,7 +118,6 @@ public class Tank {
 
         //边界检测
         boundsCheck();
-
         //更新位置
         rectangle.x = this.x;
         rectangle.y = this.y;
@@ -149,10 +143,11 @@ public class Tank {
         int bx;
         int by;
         if (this.group == Group.GOOD) {
+            if (bulletsNums <= 0) return;
             bx = this.x + Tank.GOODWIDTH / 2 - Bullet.GOODWIDTH / 2;
             by = this.y + Tank.GOODHEIGHT / 2 - Bullet.GOODHEIGHT / 2;
             tf.goodBulletList.add(new Bullet(bx, by, this.dir, tf, Group.GOOD));
-
+            bulletsNums--;
         } else {
             bx = this.x + Tank.BADWIDTH / 2 - Bullet.BADWIDTH / 2;
             by = this.y + Tank.BADHEIGHT / 2 - Bullet.BADHEIGHT / 2;
