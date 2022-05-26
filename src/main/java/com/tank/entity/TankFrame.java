@@ -69,6 +69,10 @@ public class TankFrame extends Frame {
             goodBulletList.get(i).paint(g);
         }
 
+        for (int i = 0; i < badBulletList.size(); i++) {
+            badBulletList.get(i).paint(g);
+        }
+
         //画出爆炸
         for (int i = 0; i < explodeList.size(); i++) {
             explodeList.get(i).paint(g);
